@@ -30,25 +30,24 @@ func getFormatedString() string {
 	return formated_string
 }
 
-func connectDatabase() (*sql.DB, error) {
+func connectDatabase() error {
 	psql_info := getFormatedString()
 	if psql_info == "" {
-		return nil, errors.New("Failed to load .env")
+		return errors.New("Failed to load .env")
 	}
 
 	db, err := sql.Open("postgrs", psql_info)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	DB = db
-
-	return db, nil
+	return nil
 }
 
 func RunMigrations(db *sql.DB) error {
