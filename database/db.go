@@ -4,13 +4,13 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
-var DB *sql.DB
+// var DB *sql.DB
 
 func getFormatedString() string {
 	if err := godotenv.Load(); err != nil {
@@ -24,30 +24,30 @@ func getFormatedString() string {
 	db_name := os.Getenv("DB_NAME")
 
 	formated_string := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", 
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		db_host, db_port, db_user, db_password, db_name)
 
 	return formated_string
 }
 
-func connectDatabase() error {
+func ConnectDatabase() (*sql.DB, error) {
 	psql_info := getFormatedString()
 	if psql_info == "" {
-		return errors.New("Failed to load .env")
+		return nil, errors.New("Failed to load .env")
 	}
 
-	db, err := sql.Open("postgrs", psql_info)
+	db, err := sql.Open("postgres", psql_info)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	DB = db
-	return nil
+	// DB = db
+	return db, nil
 }
 
 func RunMigrations(db *sql.DB) error {
