@@ -10,7 +10,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// var DB *sql.DB
+var DB *sql.DB
 
 func getFormatedString() string {
 	if err := godotenv.Load(); err != nil {
@@ -46,7 +46,7 @@ func ConnectDatabase() (*sql.DB, error) {
 		return nil, err
 	}
 
-	// DB = db
+	DB = db
 	return db, nil
 }
 
