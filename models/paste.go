@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
 
 type Paste struct {
@@ -66,9 +65,9 @@ func CreatePaste(ctx *gin.Context) {
 	}
 
 	if request.Content == "" {
-        ctx.JSON(400, gin.H{"error": "Content cannot be empty"})
-        return
-    }
+		ctx.JSON(400, gin.H{"error": "Content cannot be empty"})
+		return
+	}
 
 	slug := generateSlug()
 	expires_at := calculateExpiration(request.ExpiresIn)
@@ -85,12 +84,12 @@ func CreatePaste(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(500, gin.H{"error": "Failed to create paste"})
-        return
+		return
 	}
 
 	base_url := os.Getenv("BASE_URL")
 	ctx.JSON(201, gin.H{
-        "slug": slug,
-        "url": base_url + "/" + slug,
-    })
+		"slug": slug,
+		"url":  base_url + "/" + slug,
+	})
 }
