@@ -28,6 +28,10 @@ func main() {
 	router.Static("/static", "./static")
 	router.StaticFile("/", "./static/index.html")
 
+	router.GET("/:slug", func(c *gin.Context) {
+		c.File("./static/view.html")
+	})
+
 	port := os.Getenv("SERVER_PORT")
 	if port == "" {
 		port = "8080"
