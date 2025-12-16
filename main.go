@@ -25,6 +25,9 @@ func main() {
 	router.POST("/api/paste", handlers.CreatePaste)
 	router.GET("/api/paste/:slug", handlers.GetPaste)
 
+	router.Static("/static", "./static")
+	router.StaticFile("/", "./static/index.html")
+
 	port := os.Getenv("SERVER_PORT")
 	if port == "" {
 		port = "8080"
