@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"database/sql"
 	"log"
 	"math/rand"
 	"only-pastes/database"
@@ -80,4 +81,43 @@ func CreatePaste(ctx *gin.Context) {
 		"slug": slug,
 		"url":  base_url + "/" + slug,
 	})
+}
+
+func GetPaste(ctx *gin.Context) {
+	slug := ctx.Param("slug")
+
+	query := `SELECT id, slug, content, language, expires_at, views, created_at 
+            FROM pastes 
+            WHERE slug = $1`
+
+	var paste models.Paste
+
+	err := database.DB.QueryRow(query, slug).Scan(
+		&paste.ID,
+		&paste.Slug,
+		&paste.Content,
+		&paste.Language,
+		&paste.ExpiresAt,
+		&paste.Views,
+		&paste.CreatedAt,
+	)
+
+	if err == sql.ErrNoRows {
+		ctx.JSON(404, gin.H{"error": "Paste not found"})
+		return
+	}
+	if err != nil {
+		log.Println("Database error:", err)
+		ctx.JSON(500, gin.H{"error": "Failed to retrieve paste"})
+		return
+	}
+
+	if paste.ExpiresAt != nil && paste.ExpiresAt.Before(time.Now()) {
+		ctx.JSON(404, gin.H{"error": "Paste has expired"})
+		return
+	}
+
+	database.DB.Exec("UPDATE pastes SET views = views + 1 WHERE slug = $1", slug)
+
+	ctx.JSON(200, paste)
 }
