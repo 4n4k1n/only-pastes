@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="/static/style.css">
+		<title>View Paste</title>
+	</head>
+	<body>
+		<header style="text-align: center;">Only Pastes - View</header>
+
+		<div id="err-msg" style="display: none;"></div>
+
+		<div id="paste-container" style="display: none;">
+			<div>
+				<span>Language: <span id="language"></span></span>
+				<span>Views: <span id="views"></span></span>
+				<span>Created: <span id="created"></span></span>
+			</div>
+
+			<pre><code id="content"></code></pre>
+
+			<button id="copy_button">Copy</button>
+			<a href="/">Create new paste</a>
+		</div>
+		<script src="/static/view.js"></script>
+	</body>
+</html>
