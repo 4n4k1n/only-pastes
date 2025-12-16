@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"only-pastes/database"
+	"only-pastes/handlers"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func main() {
 
 	router := gin.Default()
 
-	// Add routes later here
+	router.POST("/api/paste", handlers.CreatePaste)
 
 	port := os.Getenv("SERVER_PORT")
 	if port == "" {
