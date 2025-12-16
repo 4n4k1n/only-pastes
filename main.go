@@ -23,6 +23,7 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/api/paste", handlers.CreatePaste)
+	router.GET("/api/paste/:slug", handlers.GetPaste)
 
 	port := os.Getenv("SERVER_PORT")
 	if port == "" {
