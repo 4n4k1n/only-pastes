@@ -13,15 +13,17 @@ import (
 var DB *sql.DB
 
 func getFormatedString() string {
-	if err := godotenv.Load(); err != nil {
-		return ""
-	}
+	godotenv.Load()
 
 	db_host := os.Getenv("DB_HOST")
 	db_port := os.Getenv("DB_PORT")
 	db_user := os.Getenv("DB_USER")
 	db_password := os.Getenv("DB_PASSWORD")
 	db_name := os.Getenv("DB_NAME")
+
+	if !db_host || !db_port || !db_user || !db_password || !db_name {
+		return ""
+	}
 
 	formated_string := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
@@ -33,7 +35,7 @@ func getFormatedString() string {
 func ConnectDatabase() (*sql.DB, error) {
 	psql_info := getFormatedString()
 	if psql_info == "" {
-		return nil, errors.New("Failed to load .env")
+		return nil, errors.New("Failed to load database configuration: required environment variables not set")
 	}
 
 	db, err := sql.Open("postgres", psql_info)
