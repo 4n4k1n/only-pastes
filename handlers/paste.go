@@ -44,6 +44,17 @@ func calculateExpiration(expires_in string) *time.Time {
 	return nil
 }
 
+// CreatePaste godoc
+// @Summary Create a new paste
+// @Description Create a new paste with content, language, and expiration
+// @Tags pastes
+// @Accept json
+// @Produce json
+// @Param paste body models.CreatePasteRequest true "Paste data"
+// @Success 201 {object} map[string]string "slug and url"
+// @Failure 400 {object} map[string]string "error message"
+// @Failure 500 {object} map[string]string "error message"
+// @Router /paste [post]
 func CreatePaste(ctx *gin.Context) {
 	var request models.CreatePasteRequest
 
@@ -102,6 +113,17 @@ func CreatePaste(ctx *gin.Context) {
 	})
 }
 
+// GetPaste godoc
+// @Summary Get a paste by slug
+// @Description Retrieve a paste by its slug identifier
+// @Tags pastes
+// @Accept json
+// @Produce json
+// @Param slug path string true "Paste slug"
+// @Success 200 {object} models.Paste
+// @Failure 404 {object} map[string]string "error message"
+// @Failure 500 {object} map[string]string "error message"
+// @Router /paste/{slug} [get]
 func GetPaste(ctx *gin.Context) {
 	slug := ctx.Param("slug")
 
