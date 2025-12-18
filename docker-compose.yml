@@ -14,13 +14,29 @@ services:
   app:
     build: .
     container_name: pastebin-app
-    ports:
-      - "8080:8080"
     env_file: .env
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
+    expose:
+      - "8080"
+
+  caddy:
+    image: caddy:latest
+    container_name: pastebin-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+    restart: unless-stopped
 
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:
