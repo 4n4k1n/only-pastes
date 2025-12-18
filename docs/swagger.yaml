@@ -1,0 +1,111 @@
+basePath: /api
+definitions:
+  models.CreatePasteRequest:
+    properties:
+      content:
+        type: string
+      expires_in:
+        type: string
+      language:
+        type: string
+    type: object
+  models.Paste:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      expires_at:
+        type: string
+      id:
+        type: integer
+      language:
+        type: string
+      slug:
+        type: string
+      views:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@onlypastes.com
+    name: API Support
+  description: A simple pastebin service API
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Only Pastes API
+  version: "1.0"
+paths:
+  /paste:
+    post:
+      consumes:
+      - application/json
+      description: Create a new paste with content, language, and expiration
+      parameters:
+      - description: Paste data
+        in: body
+        name: paste
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreatePasteRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: slug and url
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new paste
+      tags:
+      - pastes
+  /paste/{slug}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a paste by its slug identifier
+      parameters:
+      - description: Paste slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Paste'
+        "404":
+          description: error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a paste by slug
+      tags:
+      - pastes
+swagger: "2.0"
