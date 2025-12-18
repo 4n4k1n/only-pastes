@@ -26,7 +26,6 @@ definitions:
       views:
         type: integer
     type: object
-host: localhost:8080
 info:
   contact:
     email: support@onlypastes.com
