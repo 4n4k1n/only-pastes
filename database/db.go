@@ -21,7 +21,7 @@ func getFormatedString() string {
 	db_password := os.Getenv("DB_PASSWORD")
 	db_name := os.Getenv("DB_NAME")
 
-	if !db_host || !db_port || !db_user || !db_password || !db_name {
+	if db_host == "" || db_port == "" || db_user == "" || db_password == "" || db_name == "" {
 		return ""
 	}
 
