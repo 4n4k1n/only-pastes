@@ -7,6 +7,7 @@ import (
 	"only-pastes/database"
 	"only-pastes/models"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ import (
 
 func generateSlug() string {
 	char_set := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	lenght := 8
+	lenght := 6
 	result := make([]byte, lenght)
 
 	for i := 0; i < lenght; i++ {
@@ -56,7 +57,6 @@ func CreatePaste(ctx *gin.Context) {
 		return
 	}
 
-	slug := generateSlug()
 	expires_at := calculateExpiration(request.ExpiresIn)
 
 	query := `
@@ -67,12 +67,31 @@ func CreatePaste(ctx *gin.Context) {
 
 	var id int
 	var created_at time.Time
+	var slug string
+	var err error
 
-	err := database.DB.QueryRow(query, slug, request.Content, request.Language, expires_at).Scan(&id, &created_at)
+	maxRetries := 100
+	for attempt := 0; attempt < maxRetries; attempt++ {
+		slug = generateSlug()
+		err = database.DB.QueryRow(query, slug, request.Content, request.Language, expires_at).Scan(&id, &created_at)
 
-	if err != nil {
+		if err == nil {
+			break
+		}
+
+		if strings.Contains(err.Error(), "duplicate key") || strings.Contains(err.Error(), "unique constraint") {
+			log.Printf("Slug collision detected (attempt %d/%d): %s", attempt+1, maxRetries, slug)
+			continue
+		}
+
 		log.Println("Database error:", err)
 		ctx.JSON(500, gin.H{"error": "Failed to create paste"})
+		return
+	}
+
+	if err != nil {
+		log.Println("Failed to generate unique slug after", maxRetries, "attempts")
+		ctx.JSON(500, gin.H{"error": "Failed to generate unique identifier"})
 		return
 	}
 
