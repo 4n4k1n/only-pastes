@@ -1,0 +1,28 @@
+{
+    # Global options
+    email pregitzeranakin@gmail.com
+}
+
+42logtime.com {
+    reverse_proxy app:8080
+
+    # Enable compression
+    encode gzip
+
+    # Optional: Add security headers
+    header {
+        Strict-Transport-Security "max-age=31536000;"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "no-referrer-when-downgrade"
+    }
+}
+
+www.42logtime.com {
+    redir https://42logtime.com{uri} permanent
+}
+
+# For local development without SSL
+:80 {
+    reverse_proxy app:8080
+}
