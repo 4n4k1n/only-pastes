@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		const expires_in = document.getElementById('expires').value;
 
 		if (!content) {
-			document.getElementById('message').innerHTML = 'Content can\'t be empty'
+			const messageEl = document.getElementById('message');
+			messageEl.style.display = 'block';
+			messageEl.innerHTML = 'Content can\'t be empty';
 			return
 		}
 
@@ -31,11 +33,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (data.slug) {
 				window.location.href = '/' + data.slug;
 			} else {
-				document.getElementById('message').innerHTML = 'error'
+				const messageEl = document.getElementById('message');
+				messageEl.style.display = 'block';
+				messageEl.innerHTML = 'Error creating paste';
 			}
 		})
 		.catch(error => {
-			document.getElementById('message').innerHTML = 'Failed to create paste'
+			const messageEl = document.getElementById('message');
+			messageEl.style.display = 'block';
+			messageEl.innerHTML = 'Failed to create paste';
 		});
 	});
 });

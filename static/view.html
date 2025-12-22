@@ -1,27 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="/static/style.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 		<script src="/static/view.js"></script>
-		<title>View Paste</title>
+		<title>View Paste - Only Pastes</title>
 	</head>
 	<body>
-		<header style="text-align: center;">Only Pastes - View</header>
+		<header>Only Pastes</header>
 
 		<div class="form-group" id="err-msg" style="display: none;"></div>
 
 		<div class="form-group" id="paste-container" style="display: none;">
-			<div>
-				<span>Language: <span id="language"></span></span>
-				<span>Views: <span id="views"></span></span>
-				<span>Created: <span id="created"></span></span>
+			<div class="paste-meta">
+				<div class="paste-meta-item">
+					<span class="paste-meta-label">Language</span>
+					<span class="paste-meta-value" id="language"></span>
+				</div>
+				<div class="paste-meta-item">
+					<span class="paste-meta-label">Views</span>
+					<span class="paste-meta-value" id="views"></span>
+				</div>
+				<div class="paste-meta-item">
+					<span class="paste-meta-label">Created</span>
+					<span class="paste-meta-value" id="created"></span>
+				</div>
 			</div>
 
 			<pre><code id="content"></code></pre>
 
-			<button id="copy_button">Copy</button>
-			<a href="/">Create new paste</a>
+			<div class="paste-actions">
+				<button id="copy_button">Copy to Clipboard</button>
+				<a href="/">Create New Paste</a>
+			</div>
 		</div>
-		<script src="/static/view.js"></script>
 	</body>
 </html>

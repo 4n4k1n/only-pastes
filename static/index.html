@@ -1,23 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="/static/style.css">
 		<script src="/static/app.js"></script>
+		<title>Only Pastes - Share Code Snippets</title>
 	</head>
 	<body>
 		<header>Only Pastes</header>
+
 		<div class="form-group">
-			<label for="language">Language:</label>
+			<label for="language">Language</label>
 			<select name="language" id="language">
-				<option value="golang">Golang</option>
-				<option value="c++">C++</option>
-				<option value="c">C</option>
+				<option value="plaintext">Plain Text</option>
 				<option value="python">Python</option>
+				<option value="javascript">JavaScript</option>
+				<option value="typescript">TypeScript</option>
+				<option value="golang">Go</option>
+				<option value="rust">Rust</option>
 				<option value="java">Java</option>
+				<option value="c">C</option>
+				<option value="c++">C++</option>
+				<option value="csharp">C#</option>
+				<option value="php">PHP</option>
+				<option value="ruby">Ruby</option>
+				<option value="html">HTML</option>
+				<option value="css">CSS</option>
+				<option value="sql">SQL</option>
+				<option value="bash">Bash</option>
+				<option value="json">JSON</option>
+				<option value="yaml">YAML</option>
 			</select>
 		</div>
+
 		<div class="form-group">
-			<label for="expires">Expires:</label>
+			<label for="expires">Expiration</label>
 			<select name="expires" id="expires">
 				<option value="1h">1 Hour</option>
 				<option value="1d">1 Day</option>
@@ -25,13 +43,16 @@
 				<option value="never">Never</option>
 			</select>
 		</div>
+
 		<div class="form-group">
-			<label for="content">Content:</label>
-			<textarea name="content" id="content"></textarea>
+			<label for="content">Your Code</label>
+			<textarea name="content" id="content" placeholder="Paste your code here..."></textarea>
 		</div>
+
 		<div class="form-group">
-			<button type="button" id="button">Post Paste</button>
+			<button type="button" id="button">Create Paste</button>
 		</div>
-		<div id="message"></div>
+
+		<div id="message" style="display: none;"></div>
 	</body>
 </html>

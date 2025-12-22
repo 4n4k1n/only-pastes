@@ -16,10 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.getElementById('language').textContent = data.language;
             document.getElementById('views').textContent = data.views;
             document.getElementById('created').textContent = data.createdAt;
-            
-			document.getElementById('content').textContent = data.content;
 
-			// apply syntax later
+			const codeElement = document.getElementById('content');
+			codeElement.textContent = data.content;
+
+			// Apply syntax highlighting
+			if (typeof hljs !== 'undefined') {
+				codeElement.className = 'language-' + (data.language || 'plaintext');
+				hljs.highlightElement(codeElement);
+			}
 		})
 		.catch(error => {
 			document.getElementById('paste-container').style.display = 'none';
@@ -27,9 +32,20 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('err-msg').textContent = 'Paste not found or expired';
 		})
 
-		document.getElementById('copy_button').addEventListener('click', function() {
+		const copyButton = document.getElementById('copy_button');
+		copyButton.addEventListener('click', function() {
 			const content = document.getElementById('content').textContent;
-			navigator.clipboard.writeText(content);
-			alert('Copied to clipboard!');
+			navigator.clipboard.writeText(content).then(() => {
+				const originalText = copyButton.textContent;
+				copyButton.textContent = 'Copied!';
+				copyButton.style.background = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
+
+				setTimeout(() => {
+					copyButton.textContent = originalText;
+					copyButton.style.background = '';
+				}, 2000);
+			}).catch(err => {
+				alert('Failed to copy to clipboard');
+			});
 		});
 });
